@@ -1,5 +1,4 @@
 const https = require('https');
-const { resolve } = require('path');
 
 const get_vehicles = search_params => {
     return new Promise((resolve, reject) => {

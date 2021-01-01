@@ -1,4 +1,5 @@
 const https = require('https');
+fs = require('fs');
 const { resolve } = require('path');
 
 const get_vehicles = search_params => {
@@ -15,13 +16,24 @@ const get_vehicles = search_params => {
 
             // The whole response has been received. Parse and return the result.
             resp.on('end', () => {
-                resolve({data: data});
+                var regex = /data-listing='{[\s\S]*?}'/g;
+                var result = data.match(regex).map(function(val){
+                    return val.replace(/data-listing=/g,'').replace(/'/g,'').replace(/&quot;/g,'').replace(/"/g,'');
+                });
+                resolve("");
             });
 
         }).on("error", (err) => {
             reject(err.message);
         });
     });
+}
+
+function parse_vehicles(script) {
+    var result = script.match(/data-listing=(.*?)}"/g).map(function(val){
+        return val.replace(/data-listing=/g,'').replace(/}"/g,'');
+    });
+    return result;
 }
 
 module.exports = {

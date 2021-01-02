@@ -6,7 +6,7 @@ const get_vehicles = search_params => {
     return new Promise((resolve, reject) => {
         let url = 'https://cars.ksl.com/search' + ((search_params.make) ? '/make/' + search_params.make : '')
         + ((search_params.model) ? '/model/' + search_params.model : '');
-        https.get(url, (resp) => {
+        https.get('https://www.google.com', (resp) => {
             let data = '';
 
             // A chunk of data has been recieved.
@@ -16,10 +16,10 @@ const get_vehicles = search_params => {
 
             // The whole response has been received. Parse and return the result.
             resp.on('end', () => {
-                var regex = /data-listing='{[\s\S]*?}'/g;
-                var result = data.match(regex).map(function(val){
-                    return val.replace(/data-listing=/g,'').replace(/'/g,'').replace(/&quot;/g,'').replace(/"/g,'');
-                });
+                // var regex = /data-listing='{[\s\S]*?}'/g;
+                // var result = data.match(regex).map(function(val){
+                //     return val.replace(/data-listing=/g,'').replace(/'/g,'').replace(/&quot;/g,'').replace(/"/g,'');
+                // });
                 resolve("");
             });
 

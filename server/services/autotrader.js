@@ -4,7 +4,7 @@ const fs = require('fs');
 
 const get_vehicles = search_params => {
     return new Promise((resolve, reject) => {
-        
+
         // Load the autotrader filters json file to lookup make and model codes in  the future
         var lookup = JSON.parse(fs.readFileSync('./services/autotrader_lookup.json', 'utf8'));
 
@@ -48,8 +48,9 @@ const get_vehicles = search_params => {
 
             // The whole response has been received. Parse and return the result.
             resp.on('end', () => {
-                let vehicles = JSON.parse(data).listings.map(function(val){
-                    return {
+                let vehicles = {};
+                JSON.parse(data).listings.map(function(val){
+                    vehicles[val.vin] = {
                         zip: val.zip,
                         price: val.pricingDetail.salePrice,
                         newUsed: val.type,
@@ -57,13 +58,12 @@ const get_vehicles = search_params => {
                         make: val.make,
                         model: val.model,
                         trim: val.trim,
-                        vin: val.vin,
                         transmission: (val.specifications) ? val.specifications.transmission.value : 'Not listed',
                         mileage: (val.specifications) ? val.specifications.mileage.value.replace(',', '') : 'Not listed',
                         link: 'https://www.autotrader.com/cars-for-sale/vehicledetails.xhtml?listingId=' + val.id,
                         img: (val.images) ? val.images.sources[val.images.primary].src : '/undefined.jpg',
                         postedTime: 'val.displayTime'
-                    };
+                    }
                 });
 
                 // Resolve the promise with the final object of vehicles

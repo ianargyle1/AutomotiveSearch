@@ -27,22 +27,7 @@ const get_vehicles = search_params => {
             'hostname': 'saltlakecity.craigslist.org',
             'path': '/search/cta?search_distance=100&postal=84040&min_price=100&max_price=100000&auto_make_model=chevrolet+camaro&min_auto_year=2010&max_auto_year=2022&min_auto_miles=1000&max_auto_miles=180000',
             'headers': {
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-                'Accept-Encoding': 'gzip, deflate, br',
-                'Accept-Language': 'en-US,en;q=0.9',
-                'Cache-Control': 'no-cache',
-                'Connection': 'keep-alive',
-                'Cookie': 'cl_b=4|737d25bde800b41459cd5646e2a2a4294b0d75db|1609550625ErXt8; cl_tocmode=sss%3Agrid; cl_def_hp=saltlakecity',
-                'Host': 'saltlakecity.craigslist.org',
-                'Pragma': 'no-cache',
-                'sec-ch-ua': '"Google Chrome";v="87", " Not;A Brand";v="99", "Chromium";v="87"',
-                'sec-ch-ua-mobile': '?0',
-                'Sec-Fetch-Dest': 'document',
-                'Sec-Fetch-Mode': 'navigate',
-                'Sec-Fetch-Site': 'none',
-                'Sec-Fetch-User': '?1',
-                'Upgrade-Insecure-Requests': '1',
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36'
+                'User-Agent': 'PostmanRuntime/7.26.8'
             },
             'maxRedirects': 20
         };

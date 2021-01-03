@@ -51,8 +51,9 @@ const get_vehicles = search_params => {
 
             // The whole response has been received. Parse and return the result.
             resp.on('end', () => {
-                let vehicles = JSON.parse(data).data.items.map(function(val){
-                    return {
+                let vehicles = {};
+                JSON.parse(data).data.items.map(function(val){
+                    vehicles[val.vin] = {
                         city: val.city,
                         state: val.state,
                         zip: val.zip,
@@ -62,13 +63,12 @@ const get_vehicles = search_params => {
                         make: val.make,
                         model: val.model,
                         trim: val.trim,
-                        vin: val.vin,
                         transmission: val.transmission,
                         mileage: val.mileage,
                         link: 'https://cars.ksl.com/listing/' + val.id,
-                        img: (val.photo) ? val.photo[0].id : '/undefined.jpg',
+                        img: (val.photo) ? JSON.parse(val.photo[0]).id : '/undefined.jpg',
                         postedTime: val.displayTime
-                    };
+                    }
                 });
 
                 // Resolve the promise with the final object of vehicles

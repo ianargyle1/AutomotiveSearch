@@ -19,7 +19,7 @@ const get_vehicles = search_params => {
         if (search_params.miles) { params = params.concat(["miles", search_params.miles]); }
         if (search_params.newUsed) { params = params.concat(["newUsed", search_params.newUsed]); }
 
-        // Build the post string from an object
+        // Build the post string from an object, KSL API needs the body to be in exactly this format to function
         var post_data = JSON.stringify({
             "endpoint":"/classifieds/cars/search/searchByUrlParams",
             "options": {

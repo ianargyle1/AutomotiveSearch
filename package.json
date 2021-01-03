@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/ianargyle1/AutomotiveSearch#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "follow-redirects": "^1.13.1",
+    "request": "^2.88.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.6"

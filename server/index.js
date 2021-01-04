@@ -7,7 +7,8 @@ const app = express();
 const client_path = path.join(__dirname, '..', 'client', 'build')
 app.use(express.static(client_path));
 
-app.get('/', (req, res) => {
+// Send index.html if the url is doesn't start with /api/
+app.get(/^(?!\/api\/).+$/, (req, res) => {
     res.sendFile(path.join(client_path, 'index.html'));
 });
 

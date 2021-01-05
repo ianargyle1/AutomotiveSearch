@@ -3,10 +3,9 @@
  * @author Ian Argyle
  */
 
-import logo from './logo.svg';
 import React from 'react';
 
-export default class App extends React.Component {
+export default class SearchBox extends React.Component {
 
   /**
    * Send an API request to get the vehicles with the appropriate

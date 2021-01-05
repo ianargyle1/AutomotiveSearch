@@ -21,8 +21,8 @@ const get_vehicles = search_params => {
 
         let params = {
             'zip': search_params.zip,
-            'makeCodeList': lookup[search_params.make.toLowerCase()].value, // Lookup the correct format
-            'modelCodeList': lookup[search_params.make.toLowerCase()].makes[search_params.model.toLowerCase()], // Lookup the correct format
+            'makeCodeList': (search_params.make) ? lookup[search_params.make.toLowerCase()].value : '', // Lookup the correct format
+            'modelCodeList': (search_params.make) ? lookup[search_params.make.toLowerCase()].makes[search_params.model.toLowerCase()] : '', // Lookup the correct format
             'startYear': search_params.yearFrom, // Min is 1981, max is 2021
             'endYear': search_params.yearTo, // Min is 1981, max is 2021
             'minPrice': search_params.priceFrom,

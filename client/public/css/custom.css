@@ -2,3 +2,26 @@
 .search {
     margin-top: 4em;
 }
+
+.vehicle-small {
+    border-radius: 1em;
+    cursor: pointer;
+    box-shadow: 0px 0px 0px black;
+    transition: box-shadow 0.25s ease-in-out 0s;
+}
+
+.vehicle-small:hover {
+    box-shadow: 0px 0px 18px black;
+}
+
+.undervalue {
+    color: #77db65 !important;
+}
+
+.underval {
+    color:#434247;
+    margin-left: 1em;
+    border-radius: .2em;
+    padding-right: .5em;
+    padding-left: .5em;
+}

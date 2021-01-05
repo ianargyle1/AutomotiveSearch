@@ -5,7 +5,8 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import SearchBox from './components/SearchBox';
+import Deals from './components/Deals';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
@@ -16,7 +17,7 @@ ReactDOM.render(
             <a href="index.html" className="navbar-brand">
               <div className="brand-text brand-big visible text-uppercase">
                 <strong className="text-primary">Auto</strong>
-                <strong>Search</strong>
+                <strong>Search {this.props.location.search}</strong>
               </div>
               <div className="brand-text brand-sm">
                 <strong className="text-primary">Auto</strong>
@@ -43,9 +44,14 @@ ReactDOM.render(
         </div>
       </div>
     </nav>
-    <div className="d-flex justify-content-center">
-      <App />
-    </div>
+    <section>
+      <div className="container-fluid">
+        <div className="d-flex justify-content-center">
+          <SearchBox />
+        </div>
+        <Deals />
+      </div>
+    </section>
   </React.StrictMode>,
   document.getElementById('root')
 );

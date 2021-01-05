@@ -1,7 +1,18 @@
+/**
+ * @file Contains definition for get vehicles function for Autotrader.
+ * @author Ian Argyle
+ */
+
 const https = require('follow-redirects').https;
 const querystring = require('querystring');
 const fs = require('fs');
 
+/**
+ * Returns a promise which is resolved with formatted vehicle data from Autotrader.
+ * @param {object} search_params - JS object of search parameters.
+ * @return {Promise} A promise which is resolved with a formatted JS object of vehicles from Autotrader
+ * matching the search criteria.
+ */
 const get_vehicles = search_params => {
     return new Promise((resolve, reject) => {
 

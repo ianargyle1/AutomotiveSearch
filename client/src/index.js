@@ -1,6 +1,10 @@
+/**
+ * @file Contains the definition for navbar/header, uses App component.
+ * @author Ian Argyle
+ */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 

@@ -1,6 +1,16 @@
-const https = require('https');
-const { callbackify } = require('util');
+/**
+ * @file Contains definition for get vehicles function for KSL Cars.
+ * @author Ian Argyle
+ */
 
+const https = require('https');
+
+/**
+ * Returns a promise which is resolved with formatted vehicle data from KSL Cars.
+ * @param {object} search_params - JS object of search parameters.
+ * @return {Promise} A promise which is resolved with a formatted JS object of vehicles from KSL
+ * matching the search criteria.
+ */
 const get_vehicles = search_params => {
     return new Promise((resolve, reject) => {
         // Params array for the post data, will hold make, model, ect.

@@ -1,7 +1,18 @@
+/**
+ * @file Contains definition for get vehicles function for Craigslist.
+ * @author Ian Argyle
+ */
+
 const https = require('follow-redirects').https;
 const querystring = require('querystring');
 fs = require('fs');
 
+/**
+ * Returns a promise which is resolved with formatted vehicle data from Craigslist.
+ * @param {object} search_params - JS object of search parameters.
+ * @return {Promise} A promise which is resolved with a formatted JS object of vehicles from Craigslist
+ * matching the search criteria.
+ */
 const get_vehicles = search_params => {
     return new Promise((resolve, reject) => {
         // Params string for the post data, will hold make, model, ect.

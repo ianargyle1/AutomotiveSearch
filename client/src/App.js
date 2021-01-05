@@ -1,8 +1,18 @@
+/**
+ * @file Contains the index/search page with accompanying logic.
+ * @author Ian Argyle
+ */
+
 import logo from './logo.svg';
-// import './App.css';
 import React from 'react';
 
 export default class App extends React.Component {
+
+  /**
+   * Send an API request to get the vehicles with the appropriate
+   * search parameters when the search form is submitted.
+   * @param {object} e - form onSubmit event
+   */
   handleSubmit = e => {
     e.preventDefault();
     const data = new FormData(e.target);
@@ -15,6 +25,7 @@ export default class App extends React.Component {
       .then(response => response.json())
       .then(data => console.log(data));
   }
+
   render() {
     return (
       <div className='block search'>

@@ -8,7 +8,7 @@ const craigslist = require('../services/craigslist');
 const autotrader = require('../services/autotrader');
 
 /**
- * Responsible for handeling get request to API with search parameters.
+ * Responsible for handeling asynchronous get request to API with search parameters.
  * @param req - Request
  * @param res - Response
  * @param next - Calls next middleware, not used

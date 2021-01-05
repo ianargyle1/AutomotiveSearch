@@ -31,6 +31,11 @@ ReactDOM.render(
               Contact
             </a>
           </div>
+          <div className="list-inline-item">
+            <a href="https://github.com/ianargyle1/AutomotiveSearch" target="_blank">
+              GitHub
+            </a>
+          </div>
         </div>
       </div>
     </nav>

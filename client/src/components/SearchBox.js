@@ -4,8 +4,13 @@
  */
 
 import React from 'react';
+import Cookies from 'js-cookie';
 
 export default class SearchBox extends React.Component {
+
+  state = {
+    zip: Cookies.get('autosearch_zip')
+  }
 
   /**
    * Send an API request to get the vehicles with the appropriate
@@ -51,7 +56,7 @@ export default class SearchBox extends React.Component {
                 <label className="form-control-label">Location</label>
                 <div className="form-group row">
                   <div className="col-sm-6">
-                    <input name="zip" type="zip" placeholder="Zip code" className="form-control"/>
+                    <input name="zip" type="zip" placeholder="Zip code" value={this.state.zip} className="form-control"/>
                   </div>
                   <div className="col-sm-6">
                     <select name="miles" className="form-control mb-3">

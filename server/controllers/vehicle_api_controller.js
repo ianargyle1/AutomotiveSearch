@@ -35,7 +35,7 @@ function get_vehicles(req, res, next) {
           value_promises.push(
             get_price({
               vin: trim.vin,
-              zip: "84102",
+              zip: (req.query.zip) ? req.query.zip : (vehicles[trim.vin].zip) ? vehicles[trim.vin].zip : "90017",
               condition: "GOOD",
               odometer: (vehicles[trim.vin].mileage) ? vehicles[trim.vin].mileage : trim.mileage,
               trimOptions: trim.trimOptions
@@ -47,8 +47,8 @@ function get_vehicles(req, res, next) {
       });
       Promise.all(value_promises).then((data) => {
         data.forEach(price => {
-          if (price.price) {
-            vehicles[price.vin].undervalue = (price.price-vehicles[price.vin].price);
+          if (price.price && price.price.vehiclePrice) {
+            vehicles[price.vin].undervalue = ((vehicles[price.vin].sellerType === 'Dealership') ? price.price.vehiclePrice.consumerRetailPrice : price.price.fsboPrice) - vehicles[price.vin].price;
           }
         });
         res.send(vehicles);
@@ -136,7 +136,7 @@ function get_price(vehicle) {
         resp.on("end", () => {
           // Resolve the promise with the final retail price
           try {
-            resolve({price: JSON.parse(data).vehiclePrice.consumerRetailPrice, vin: vehicle.vin });
+            resolve({price: JSON.parse(data).vehiclePrice, vin: vehicle.vin });
           } catch {
             console.log(vehicle, vehicle.trimOptions.options, data);
             resolve({price:false, vin:vehicle.vin});

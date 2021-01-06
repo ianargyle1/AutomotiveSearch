@@ -5,54 +5,18 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import SearchBox from './components/SearchBox';
-import Deals from './components/Deals';
+import {Route, BrowserRouter as Router} from 'react-router-dom'
+import Navbar from './components/Navbar';
+import HomePage from './pages/HomePage';
+import SearchPage from './pages/SearchPage';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <nav className="navbar navbar-expand-lg">
-      <div className="container-fluid d-flex align-items-center justify-content-between">
-        <div className="navbar-header">
-            <a href="index.html" className="navbar-brand">
-              <div className="brand-text brand-big visible text-uppercase">
-                <strong className="text-primary">Auto</strong>
-                <strong>Search</strong>
-              </div>
-              <div className="brand-text brand-sm">
-                <strong className="text-primary">Auto</strong>
-              </div>
-            </a>
-          <button className="sidebar-toggle"><i className="fa fa-long-arrow-left"></i></button>
-        </div>
-        <div className="right-menu list-inline no-margin-bottom">    
-          <div className="list-inline-item">
-            <a href="#">
-              About
-            </a>
-          </div>
-          <div className="list-inline-item">
-            <a href="#">
-              Contact
-            </a>
-          </div>
-          <div className="list-inline-item">
-            <a href="https://github.com/ianargyle1/AutomotiveSearch" target="_blank">
-              GitHub
-            </a>
-          </div>
-        </div>
-      </div>
-    </nav>
-    <section>
-      <div className="container-fluid">
-        <div className="d-flex justify-content-center">
-          <SearchBox />
-        </div>
-        <Deals />
-      </div>
-    </section>
-  </React.StrictMode>,
+  <Router>
+    <Navbar />
+    <Route exact path='/' component={HomePage}/>
+    <Route exact path='/search' component={SearchPage}/>
+  </Router>,
   document.getElementById('root')
 );
 

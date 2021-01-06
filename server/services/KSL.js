@@ -14,20 +14,25 @@ const https = require('https');
 const get_vehicles = search_params => {
     return new Promise((resolve, reject) => {
         // Params array for the post data, will hold make, model, ect.
-        let params = ["perPage","96","page","1"];
+        let params = {
+            perPage: "96",
+            page: "1",
+            make: search_params.make,
+            model: search_params.model,
+            yearFrom: search_params.yearFrom,
+            yearTo: search_params.yearTo,
+            mileageFrom: search_params.mileageFrom,
+            mileageTo: search_params.mileageTo,
+            priceFrom: search_params.priceFrom,
+            priceTo: search_params.priceTo,
+            zip: search_params.zip,
+            miles: search_params.miles,
+            newUsed: search_params.newUsed,
+            body: search_params.body
+        }
 
-        // Add parameters to params if they exists
-        if (search_params.make) { params = params.concat(["make", search_params.make]); }
-        if (search_params.model) { params = params.concat(["model", search_params.model]); }
-        if (search_params.yearFrom) { params = params.concat(["yearFrom", search_params.yearFrom]); }
-        if (search_params.yearTo) { params = params.concat(["yearTo", search_params.yearTo]); }
-        if (search_params.mileageFrom) { params = params.concat(["mileageFrom", search_params.mileageFrom]); }
-        if (search_params.mileageTo) { params = params.concat(["mileageTo", search_params.mileageTo]); }
-        if (search_params.priceFrom) { params = params.concat(["priceFrom", search_params.priceFrom]); }
-        if (search_params.priceTo) { params = params.concat(["priceTo", search_params.priceTo]); }
-        if (search_params.zip) { params = params.concat(["zip", search_params.zip]); }
-        if (search_params.miles) { params = params.concat(["miles", search_params.miles]); }
-        if (search_params.newUsed) { params = params.concat(["newUsed", search_params.newUsed]); }
+        // Remove the undefined parameters from params
+        Object.keys(params).forEach(key => params[key] === undefined ? delete params[key] : {});
 
         // Build the post string from an object, KSL API needs the body to be in exactly this format to function
         var post_data = JSON.stringify({
@@ -77,7 +82,8 @@ const get_vehicles = search_params => {
                         mileage: parseInt(val.mileage),
                         link: 'https://cars.ksl.com/listing/' + val.id,
                         img: (val.photo) ? JSON.parse(val.photo[0]).id : '/undefined.jpg',
-                        postedTime: val.displayTime
+                        postedTime: val.displayTime,
+                        sellerType: val.sellerType
                     }
                 });
 

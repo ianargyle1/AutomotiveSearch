@@ -5,6 +5,9 @@
 
 import React from 'react';
 import VehicleSmall from './VehicleSmall';
+import {getVehicles} from '../services/getVehicles'
+import {sortVehicles} from '../services/sortVehicles'
+import Cookies from 'js-cookie';
 
 export default class Deals extends React.Component {
 
@@ -18,9 +21,10 @@ export default class Deals extends React.Component {
    * @param {object} e - form onSubmit event
    */
   componentWillMount = () => {
-    fetch('http://localhost:3000/api/vehicles?zip=84102')
-        .then(response => response.json())
-        .then(data => this.setState({ vehicles:Object.entries(data).slice(0, 8) }));
+    let zip = Cookies.get('autosearch_zip');
+    getVehicles({zip: (zip) ? zip : "90017"}).then(data => {
+        this.setState({ vehicles: Object.entries(sortVehicles(data, 'undervalue', true)).slice(0, 8) });
+    });
   }
 
   render() {
@@ -30,7 +34,7 @@ export default class Deals extends React.Component {
             <div className="row">
                 {this.state.vehicles.map(item => {
                     return <VehicleSmall vehicle={{
-                        title:item[1].makeYear + ' ' + item[1].make + ' ' + item[1].model + ' ' + item[1].trim, 
+                        title:item[1].makeYear + ' ' + item[1].make + ' ' + item[1].model + (item[1].trim) ? ' ' + item[1].trim : '', 
                         img:item[1].img,
                         mileage:item[1].mileage,
                         price:item[1].price,

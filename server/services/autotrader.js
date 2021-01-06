@@ -20,18 +20,19 @@ const get_vehicles = search_params => {
         var lookup = JSON.parse(fs.readFileSync('./services/autotrader_lookup.json', 'utf8'));
 
         let params = {
-            'zip': search_params.zip,
-            'makeCodeList': (search_params.make) ? lookup[search_params.make.toLowerCase()].value : '', // Lookup the correct format
-            'modelCodeList': (search_params.make) ? lookup[search_params.make.toLowerCase()].makes[search_params.model.toLowerCase()] : '', // Lookup the correct format
-            'startYear': search_params.yearFrom, // Min is 1981, max is 2021
-            'endYear': search_params.yearTo, // Min is 1981, max is 2021
-            'minPrice': search_params.priceFrom,
-            'maxPrice': search_params.priceTo,
-            'maxMileage': search_params.mileageTo, // 0 for any
-            'searchRadius': search_params.miles, // 0 for any distance
-            'sellerTypes': search_params.sellerTypes, // d or p for dealer or private
-            'numRecords': '20000',
-            'firstRecord': '0',
+            zip: search_params.zip,
+            makeCodeList: (search_params.make) ? lookup[search_params.make.toLowerCase()].value : '', // Lookup the correct format
+            modelCodeList: (search_params.make) ? lookup[search_params.make.toLowerCase()].makes[search_params.model.toLowerCase()] : '', // Lookup the correct format
+            startYear: search_params.yearFrom, // Min is 1981, max is 2021
+            endYear: search_params.yearTo, // Min is 1981, max is 2021
+            minPrice: search_params.priceFrom,
+            maxPrice: search_params.priceTo,
+            maxMileage: search_params.mileageTo, // 0 for any
+            searchRadius: search_params.miles, // 0 for any distance
+            sellerTypes: (search_params.sellerTypes === 'Dealer') ? 'd' : 'p', // d or p for dealer or private
+            vehicleStyleCode: convertStyleCode(search_params.body),
+            numRecords: '20000',
+            firstRecord: '0',
         }
 
         // Remove the undefined parameters from params
@@ -73,7 +74,8 @@ const get_vehicles = search_params => {
                         mileage: (val.specifications) ? parseInt(val.specifications.mileage.value.replace(',', '')) : 'Not listed',
                         link: 'https://www.autotrader.com/cars-for-sale/vehicledetails.xhtml?listingId=' + val.id,
                         img: (val.images) ? val.images.sources[val.images.primary].src : '/undefined.jpg',
-                        postedTime: 'val.displayTime'
+                        postedTime: 'val.displayTime',
+                        sellerType: (val.ownerName === 'Private Seller') ? 'Private' : 'Dealer'
                     }
                 });
 
@@ -86,6 +88,23 @@ const get_vehicles = search_params => {
         });
         req.end();
     });
+}
+
+const convertStyleCode = (code) => {
+    let stylesObj = {
+        'Compact': 'HATCH',
+        'Coupe': 'COUPE',
+        'Crossover': 'SUVCROSS',
+        'Hatchback': 'HATCH',
+        'Minivan': 'VANMV',
+        'Sedan': 'SEDAN',
+        'SUV': 'SUVCROSS',
+        'Truck': 'TRUCKS',
+        'Van': 'VANMV',
+        'Wagon': 'WAGON',
+        'Convertible': 'CONVERT'
+    }
+    return stylesObj[code];
 }
 
 module.exports = {

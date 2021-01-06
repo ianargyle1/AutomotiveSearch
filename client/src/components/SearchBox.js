@@ -5,11 +5,14 @@
 
 import React from 'react';
 import Cookies from 'js-cookie';
+import { Redirect } from "react-router-dom";
+import {getVehicles} from '../services/getVehicles'
 
 export default class SearchBox extends React.Component {
 
   state = {
-    zip: Cookies.get('autosearch_zip')
+    zip: Cookies.get('autosearch_zip'),
+    toSearch: false
   }
 
   /**
@@ -19,18 +22,15 @@ export default class SearchBox extends React.Component {
    */
   handleSubmit = e => {
     e.preventDefault();
-    const data = new FormData(e.target);
-    const params = [...data.entries()]
-      .map(param => {
-        return (param[1] != '') ? param[0] + '=' + param[1] : '';
-      }).filter(Boolean).join('&');
-    console.log(params);
-    fetch('https://jsonplaceholder.typicode.com/todos/1')
-      .then(response => response.json())
-      .then(data => console.log(data));
+    this.setState({ toSearch: true });
+    // const data = new FormData(e.target).entries();
+    // getVehicles(data).then(vehicles => console.log(vehicles));
   }
 
   render() {
+    if (this.state.toSearch) {
+      return <Redirect to='/search' />
+    }
     return (
       <div className='block search'>
         <div className="title"><strong className="d-block">Search</strong></div>

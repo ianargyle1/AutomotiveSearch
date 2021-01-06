@@ -17,7 +17,7 @@ ReactDOM.render(
             <a href="index.html" className="navbar-brand">
               <div className="brand-text brand-big visible text-uppercase">
                 <strong className="text-primary">Auto</strong>
-                <strong>Search {this.props.location.search}</strong>
+                <strong>Search</strong>
               </div>
               <div className="brand-text brand-sm">
                 <strong className="text-primary">Auto</strong>

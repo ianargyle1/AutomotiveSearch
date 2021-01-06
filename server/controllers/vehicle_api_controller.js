@@ -3,9 +3,10 @@
  * @author Ian Argyle
  */
 
-const ksl = require('../services/KSL');
-const craigslist = require('../services/craigslist');
-const autotrader = require('../services/autotrader');
+const https = require("https");
+const ksl = require("../services/KSL");
+const craigslist = require("../services/craigslist");
+const autotrader = require("../services/autotrader");
 
 /**
  * Responsible for handeling asynchronous get request to API with search parameters.
@@ -15,12 +16,141 @@ const autotrader = require('../services/autotrader');
  */
 function get_vehicles(req, res, next) {
   let vehicles = {};
-  Promise.all([autotrader.get_vehicles(req.query), ksl.get_vehicles(req.query)]).then((data) => {
-    data.forEach((vehicles_object) => vehicles = {...vehicles, ...vehicles_object});
-    res.send(JSON.stringify(vehicles));
+  Promise.all([
+    autotrader.get_vehicles(req.query),
+    ksl.get_vehicles(req.query),
+  ]).then((data) => {
+    // Combine the data into vehicles
+    data.forEach(
+      (vehicles_object) => (vehicles = { ...vehicles, ...vehicles_object })
+    );
+    let vins = Object.keys(vehicles);
+    // Get all the trims so we can submit them with the api requests for prices
+    let trim_promises = [];
+    vins.forEach((vin) => trim_promises.push(get_trim(vin)));
+    Promise.all(trim_promises).then((data) => {
+      value_promises = [];
+      data.forEach((trim) => {
+        if (trim.trimOptions) {
+          value_promises.push(
+            get_price({
+              vin: trim.vin,
+              zip: "84102",
+              condition: "GOOD",
+              odometer: (vehicles[trim.vin].mileage) ? vehicles[trim.vin].mileage : trim.mileage,
+              trimOptions: trim.trimOptions
+            })
+          );
+        } else {
+          delete vehicles[trim.vin];
+        }
+      });
+      Promise.all(value_promises).then((data) => {
+        data.forEach(price => {
+          if (price.price) {
+            vehicles[price.vin].undervalue = (price.price-vehicles[price.vin].price);
+          }
+        });
+        res.send(vehicles);
+      });
+    });
+  });
+}
+
+function get_trim(vin) {
+  return new Promise((resolve, reject) => {
+    var options = {
+      method: "GET",
+      hostname: "consumerapi.carfax.com",
+      path: "/hbv/cow/trims/" + vin,
+      headers: {
+        "User-Agent": "PostmanRuntime/7.26.8",
+        "Accept": "application/json",
+      }
+    };
+
+    let req = https
+      .request(options, (resp) => {
+        let data = "";
+
+        // A chunk of data has been recieved.
+        resp.on("data", (chunk) => {
+          data += chunk;
+        });
+
+        // The whole response has been received. Parse and return the result.
+        resp.on("end", () => {
+          // Resolve the promise with the final object of trims
+          try {
+            let trim = JSON.parse(data);
+            resolve({
+              trimOptions: {
+                subtrim: trim.trimOptions[0].subtrim, 
+                trim: trim.trimOptions[0].trim, 
+                trimDisplay: trim.trimOptions[0].trimDisplay, 
+                trimDefault: false,
+                options: trim.trimOptions[0].options.filter(option => { return option.componentDefault === true })
+              },
+              mileage: trim.odometer,
+              vin: vin
+            });
+          } catch (e) {
+            resolve({
+              trimOtions: false,
+              vin: vin
+            });
+          }
+        });
+      })
+      .on("error", (err) => {
+        reject(err.message);
+      });
+    req.end();
+  });
+}
+
+function get_price(vehicle) {
+  return new Promise((resolve, reject) => {
+    var options = {
+      method: "POST",
+      hostname: "consumerapi.carfax.com",
+      path: "/hbv/cow/prices",
+      headers: {
+        "User-Agent": "PostmanRuntime/7.26.8",
+        "Accept": "*/*",
+        "Content-Type": "application/json"
+      },
+      maxRedirects: 20,
+    };
+
+    let req = https
+      .request(options, (resp) => {
+        let data = "";
+
+        // A chunk of data has been recieved.
+        resp.on("data", (chunk) => {
+          data += chunk;
+        });
+
+        // The whole response has been received. Parse and return the result.
+        resp.on("end", () => {
+          // Resolve the promise with the final retail price
+          try {
+            resolve({price: JSON.parse(data).vehiclePrice.consumerRetailPrice, vin: vehicle.vin });
+          } catch {
+            console.log(vehicle, vehicle.trimOptions.options, data);
+            resolve({price:false, vin:vehicle.vin});
+          }
+        });
+      })
+      .on("error", (err) => {
+        reject(err.message);
+      });
+      req.write(JSON.stringify(vehicle));
+    req.end();
   });
 }
 
 module.exports = {
-  get_vehicles
-}
+  get_vehicles,
+};

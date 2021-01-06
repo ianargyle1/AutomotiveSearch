@@ -61,7 +61,7 @@ const get_vehicles = search_params => {
             resp.on('end', () => {
                 let vehicles = {};
                 JSON.parse(data).listings.map(function(val){
-                    vehicles[val.vin] = {
+                    vehicles[val.vin.replace(/\s/g,'').toUpperCase()] = {
                         zip: val.zip,
                         price: val.pricingDetail.salePrice,
                         newUsed: val.type,
@@ -70,7 +70,7 @@ const get_vehicles = search_params => {
                         model: val.model,
                         trim: val.trim,
                         transmission: (val.specifications) ? val.specifications.transmission.value : 'Not listed',
-                        mileage: (val.specifications) ? val.specifications.mileage.value.replace(',', '') : 'Not listed',
+                        mileage: (val.specifications) ? parseInt(val.specifications.mileage.value.replace(',', '')) : 'Not listed',
                         link: 'https://www.autotrader.com/cars-for-sale/vehicledetails.xhtml?listingId=' + val.id,
                         img: (val.images) ? val.images.sources[val.images.primary].src : '/undefined.jpg',
                         postedTime: 'val.displayTime'

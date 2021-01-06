@@ -21,7 +21,7 @@ export default class UndervalBox extends React.Component {
             desc = " Over";
             num = -1*num;
         }
-        return num.toLocaleString() + desc;
+        return (num) ? num.toLocaleString() + desc : "Error";
     }
     render() {
         return (

@@ -18,7 +18,7 @@ export default class Deals extends React.Component {
    * @param {object} e - form onSubmit event
    */
   componentWillMount = () => {
-    fetch('http://localhost:3000/api/vehicles?zip=' + navigator.geolocation.postalCode)
+    fetch('http://localhost:3000/api/vehicles?zip=84102')
         .then(response => response.json())
         .then(data => this.setState({ vehicles:Object.entries(data).slice(0, 8) }));
   }
@@ -34,7 +34,7 @@ export default class Deals extends React.Component {
                         img:item[1].img,
                         mileage:item[1].mileage,
                         price:item[1].price,
-                        undervalue:1000,
+                        undervalue:item[1].undervalue,
                         link:item[1].link
                     }}/>;
                 })}

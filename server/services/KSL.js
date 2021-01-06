@@ -63,7 +63,7 @@ const get_vehicles = search_params => {
             resp.on('end', () => {
                 let vehicles = {};
                 JSON.parse(data).data.items.map(function(val){
-                    vehicles[val.vin] = {
+                    vehicles[val.vin.replace(/\s/g,'').toUpperCase()] = {
                         city: val.city,
                         state: val.state,
                         zip: val.zip,
@@ -74,7 +74,7 @@ const get_vehicles = search_params => {
                         model: val.model,
                         trim: val.trim,
                         transmission: val.transmission,
-                        mileage: val.mileage,
+                        mileage: parseInt(val.mileage),
                         link: 'https://cars.ksl.com/listing/' + val.id,
                         img: (val.photo) ? JSON.parse(val.photo[0]).id : '/undefined.jpg',
                         postedTime: val.displayTime

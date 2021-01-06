@@ -31,6 +31,7 @@ const get_vehicles = search_params => {
             searchRadius: search_params.miles, // 0 for any distance
             sellerTypes: (search_params.sellerTypes === 'Dealer') ? 'd' : 'p', // d or p for dealer or private
             vehicleStyleCode: convertStyleCode(search_params.body),
+            vhrTypes: (search_params.titleType === 'Clean') ? 'NO_ACCIDENTS' : '',
             numRecords: '20000',
             firstRecord: '0',
         }
@@ -70,12 +71,12 @@ const get_vehicles = search_params => {
                         make: val.make,
                         model: val.model,
                         trim: val.trim,
-                        transmission: (val.specifications) ? val.specifications.transmission.value : 'Not listed',
-                        mileage: (val.specifications) ? parseInt(val.specifications.mileage.value.replace(',', '')) : 'Not listed',
+                        transmission: (val.specifications.transmission) ? val.specifications.transmission.value : 'Not listed',
+                        mileage: (val.specifications.mileage) ? parseInt(val.specifications.mileage.value.replace(',', '')) : 'Not listed',
                         link: 'https://www.autotrader.com/cars-for-sale/vehicledetails.xhtml?listingId=' + val.id,
                         img: (val.images) ? val.images.sources[val.images.primary].src : '/undefined.jpg',
                         postedTime: 'val.displayTime',
-                        sellerType: (val.ownerName === 'Private Seller') ? 'Private' : 'Dealer'
+                        sellerType: (val.ownerName === 'Private Seller') ? 'Private' : 'Dealer',
                     }
                 });
 

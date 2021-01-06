@@ -28,7 +28,8 @@ const get_vehicles = search_params => {
             zip: search_params.zip,
             miles: search_params.miles,
             newUsed: search_params.newUsed,
-            body: search_params.body
+            body: search_params.body,
+            titleType: (search_params.titleType) ? search_params.titleType + '+Title' : undefined
         }
 
         // Remove the undefined parameters from params

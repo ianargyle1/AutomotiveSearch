@@ -47,8 +47,8 @@ function get_vehicles(req, res, next) {
       });
       Promise.all(value_promises).then((data) => {
         data.forEach(price => {
-          if (price.price && price.price.vehiclePrice) {
-            vehicles[price.vin].undervalue = ((vehicles[price.vin].sellerType === 'Dealership') ? price.price.vehiclePrice.consumerRetailPrice : price.price.fsboPrice) - vehicles[price.vin].price;
+          if (price.price) {
+            vehicles[price.vin].undervalue = ((vehicles[price.vin].sellerType === 'Dealership') ? price.price.consumerRetailPrice : price.price.fsboPrice) - vehicles[price.vin].price;
           }
         });
         res.send(vehicles);

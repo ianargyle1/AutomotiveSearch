@@ -22,7 +22,7 @@ export default class Deals extends React.Component {
    */
   componentWillMount = () => {
     let zip = Cookies.get('autosearch_zip');
-    getVehicles({zip: (zip) ? zip : "90017"}).then(data => {
+    getVehicles({zip: (zip) ? zip : "90017", titleType: "Clean"}).then(data => {
         this.setState({ vehicles: Object.entries(sortVehicles(data, 'undervalue', true)).slice(0, 8) });
     });
   }
@@ -34,7 +34,7 @@ export default class Deals extends React.Component {
             <div className="row">
                 {this.state.vehicles.map(item => {
                     return <VehicleSmall vehicle={{
-                        title:item[1].makeYear + ' ' + item[1].make + ' ' + item[1].model + (item[1].trim) ? ' ' + item[1].trim : '', 
+                        title:item[1].makeYear + ' ' + item[1].make + ' ' + item[1].model + ((item[1].trim) ? ' ' + item[1].trim : ''), 
                         img:item[1].img,
                         mileage:item[1].mileage,
                         price:item[1].price,

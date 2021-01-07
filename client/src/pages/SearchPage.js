@@ -10,7 +10,7 @@ import { sortVehicles } from "../services/sortVehicles";
 
 export default class SearchPage extends React.Component {
   state = {
-    vehicles: []
+    vehicles: [],
   };
   componentWillMount = () => {
     getVehicles(this.props.location.state.searchParams).then((vehicles) =>
@@ -19,19 +19,28 @@ export default class SearchPage extends React.Component {
   };
   resort = (e) => {
     let lookup = {
-      "unvervalue_dec": {by: "undervalue", dec: true},
-      "unvervalue_asc": {by: "undervalue", dec: false},
-      "price_dec": {by: "price", dec: true},
-      "price_asc": {by: "price", dec: false},
-      "year_dec": {by: "makeYear", dec: true},
-      "year_asc": {by: "makeYear", dec: false},
-      "mileage_dec": {by: "mileage", dec: true},
-      "mileage_asc": {by: "mileage", dec: false}
-    }
+      unvervalue_dec: { by: "undervalue", dec: true },
+      unvervalue_asc: { by: "undervalue", dec: false },
+      price_dec: { by: "price", dec: true },
+      price_asc: { by: "price", dec: false },
+      year_dec: { by: "makeYear", dec: true },
+      year_asc: { by: "makeYear", dec: false },
+      mileage_dec: { by: "mileage", dec: true },
+      mileage_asc: { by: "mileage", dec: false },
+    };
     if (lookup[e.target.value]) {
-      this.setState({ vehicles: sortVehicles(Object.fromEntries(this.state.vehicles), lookup[e.target.value].by, lookup[e.target.value].dec) });
+      this.setState({
+        vehicles: sortVehicles(
+          Object.fromEntries(this.state.vehicles),
+          lookup[e.target.value].by,
+          lookup[e.target.value].dec
+        ),
+      });
     }
-  }
+  };
+  renderVehicles = () => {
+    return <p>help</p>;
+  };
   render() {
     return (
       <div>
@@ -208,7 +217,11 @@ export default class SearchPage extends React.Component {
                 </div>
                 <div className="col-sm-3">
                   <label className="form-control-label">Sort</label>
-                  <select name="sort" className="form-control" onChange={this.resort}>
+                  <select
+                    name="sort"
+                    className="form-control"
+                    onChange={this.resort}
+                  >
                     <option value="unvervalue_dec">Best Deals First</option>
                     <option value="unvervalue_asc">Best Deals Last</option>
                     <option value="price_dec">Price (High to Low)</option>
@@ -221,36 +234,42 @@ export default class SearchPage extends React.Component {
                 </div>
               </div>
               <div className="form-group">
-                  <input
-                    type="submit"
-                    value="Search"
-                    className="btn btn-primary"
-                  />
-                </div>
+                <input
+                  type="submit"
+                  value="Search"
+                  className="btn btn-primary"
+                />
+              </div>
             </form>
           </div>
         </div>
         <div className="row">
-          {this.state.vehicles.map((item) => {
-            return (
-              <VehicleSmall
-                vehicle={{
-                  title:
-                    item[1].makeYear +
-                    " " +
-                    item[1].make +
-                    " " +
-                    item[1].model +
-                    (item[1].trim ? " " + item[1].trim : ""),
-                  img: item[1].img,
-                  mileage: item[1].mileage,
-                  price: item[1].price,
-                  undervalue: item[1].undervalue,
-                  link: item[1].link,
-                }}
-              />
-            );
-          })}
+          {this.state.vehicles.length > 0 ? (
+            this.state.vehicles.map((item) => {
+              return (
+                <VehicleSmall
+                  vehicle={{
+                    title:
+                      item[1].makeYear +
+                      " " +
+                      item[1].make +
+                      " " +
+                      item[1].model +
+                      (item[1].trim ? " " + item[1].trim : ""),
+                    img: item[1].img,
+                    mileage: item[1].mileage,
+                    price: item[1].price,
+                    undervalue: item[1].undervalue,
+                    link: item[1].link,
+                  }}
+                />
+              );
+            })
+          ) : (
+            <div style={{ width: "100%" }}>
+              <h4 className="text-center">Loading...</h4>
+            </div>
+          )}
         </div>
       </div>
     );

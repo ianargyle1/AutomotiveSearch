@@ -23,7 +23,7 @@ export default class Deals extends React.Component {
   componentWillMount = () => {
     let zip = Cookies.get('autosearch_zip');
     getVehicles({zip: (zip) ? zip : "90017", titleType: "Clean"}).then(data => {
-        this.setState({ vehicles: Object.entries(sortVehicles(data, 'undervalue', true)).slice(0, 8) });
+        this.setState({ vehicles: sortVehicles(data, 'undervalue', true).slice(0, 8) });
     });
   }
 

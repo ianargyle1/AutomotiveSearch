@@ -1,6 +1,9 @@
-/* your styles go here */
 .search {
     margin-top: 4em;
+}
+
+.search-head {
+    margin-top: 1em;
 }
 
 .vehicle-small {

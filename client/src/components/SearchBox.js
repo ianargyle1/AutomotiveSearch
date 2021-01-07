@@ -5,14 +5,12 @@
 
 import React from 'react';
 import Cookies from 'js-cookie';
-import { Redirect } from "react-router-dom";
-import {getVehicles} from '../services/getVehicles'
+import { withRouter } from 'react-router-dom'
 
-export default class SearchBox extends React.Component {
+class SearchBox extends React.Component {
 
   state = {
-    zip: Cookies.get('autosearch_zip'),
-    toSearch: false
+    zip: Cookies.get('autosearch_zip')
   }
 
   /**
@@ -22,15 +20,16 @@ export default class SearchBox extends React.Component {
    */
   handleSubmit = e => {
     e.preventDefault();
-    this.setState({ toSearch: true });
+    // Total BS, replace with something better
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries([...formData.entries()].filter(searchParam => searchParam[1] !== ""));
+    this.props.history.push({ pathname:'/search', state: { searchParams: data } })
+    // this.setState({ toSearch: true, searchParams: data });
     // const data = new FormData(e.target).entries();
     // getVehicles(data).then(vehicles => console.log(vehicles));
   }
 
   render() {
-    if (this.state.toSearch) {
-      return <Redirect to='/search' />
-    }
     return (
       <div className='block search'>
         <div className="title"><strong className="d-block">Search</strong></div>
@@ -109,3 +108,5 @@ export default class SearchBox extends React.Component {
     );
   }
 }
+
+export default withRouter(SearchBox);

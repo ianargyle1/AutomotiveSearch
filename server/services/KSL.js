@@ -34,7 +34,7 @@ const get_vehicles = search_params => {
 
         // Remove the undefined parameters from params
         Object.keys(params).forEach(key => params[key] === undefined ? delete params[key] : {});
-
+        
         // Build the post string from an object, KSL API needs the body to be in exactly this format to function
         var post_data = JSON.stringify({
             "endpoint":"/classifieds/cars/search/searchByUrlParams",
@@ -44,7 +44,7 @@ const get_vehicles = search_params => {
                     "Content-Type":"application/json",
                     "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"
                 },
-                "body":params
+                "body":Object.entries(params).flat()
             }
         });
 

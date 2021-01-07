@@ -138,7 +138,6 @@ function get_price(vehicle) {
           try {
             resolve({price: JSON.parse(data).vehiclePrice, vin: vehicle.vin });
           } catch {
-            console.log(vehicle, vehicle.trimOptions.options, data);
             resolve({price:false, vin:vehicle.vin});
           }
         });

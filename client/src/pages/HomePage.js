@@ -11,12 +11,10 @@ export default class HomePage extends React.Component {
   render() {
     return (
       <section>
-        <div className="container-fluid">
           <div className="d-flex justify-content-center">
             <SearchBox />
           </div>
           <Deals />
-        </div>
       </section>
     );
   }

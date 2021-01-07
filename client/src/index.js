@@ -14,8 +14,10 @@ import reportWebVitals from './reportWebVitals';
 ReactDOM.render(
   <Router>
     <Navbar />
-    <Route exact path='/' component={HomePage}/>
-    <Route exact path='/search' component={SearchPage}/>
+    <div className="container-fluid">
+      <Route exact path='/' component={HomePage}/>
+      <Route exact path='/search' component={SearchPage}/>
+    </div>
   </Router>,
   document.getElementById('root')
 );

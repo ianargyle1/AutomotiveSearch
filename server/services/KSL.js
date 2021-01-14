@@ -88,7 +88,7 @@ const get_vehicles = (search_params) => {
               transmission: val.transmission,
               mileage: parseInt(val.mileage),
               link: "https://cars.ksl.com/listing/" + val.id,
-              img: val.photo ? JSON.parse(val.photo[0]).id : "/undefined.jpg",
+              img: val.photo ? JSON.parse(val.photo[0]).id : "https://i.ibb.co/r0z7mGY/noimg.png",
               postedTime: val.displayTime,
               sellerType: val.sellerType,
             };

@@ -20,17 +20,14 @@ export default class Navbar extends React.Component {
                 <strong className="text-primary">Auto</strong>
               </div>
             </a>
-            <button className="sidebar-toggle">
-              <i className="fa fa-long-arrow-left"></i>
-            </button>
           </div>
           <div className="right-menu list-inline no-margin-bottom">
-            <div className="list-inline-item">
+            {/* <div className="list-inline-item">
               <a href="#">About</a>
             </div>
             <div className="list-inline-item">
               <a href="#">Contact</a>
-            </div>
+            </div> */}
             <div className="list-inline-item">
               <a
                 href="https://github.com/ianargyle1/AutomotiveSearch"

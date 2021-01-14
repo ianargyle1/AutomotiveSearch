@@ -99,7 +99,7 @@ const get_vehicles = (search_params) => {
                   val.id,
                 img: val.images
                   ? val.images.sources[val.images.primary].src
-                  : "/undefined.jpg",
+                  : "https://i.ibb.co/r0z7mGY/noimg.png",
                 postedTime: "val.displayTime",
                 sellerType:
                   val.ownerName === "Private Seller" ? "Private" : "Dealer",

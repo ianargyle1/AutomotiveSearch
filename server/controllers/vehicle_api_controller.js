@@ -9,13 +9,14 @@ const craigslist = require("../services/craigslist");
 const autotrader = require("../services/autotrader");
 
 /**
- * Responsible for handeling asynchronous get request to API with search parameters.
+ * Responsible for handling asynchronous get request to API with search parameters.
  * @param req - Request
  * @param res - Response
  * @param next - Calls next middleware, not used
  */
 function get_vehicles(req, res, next) {
   let vehicles = {};
+  // Send the requests
   Promise.all([
     autotrader.get_vehicles(req.query),
     ksl.get_vehicles(req.query),
@@ -28,27 +29,39 @@ function get_vehicles(req, res, next) {
     // Get all the trims so we can submit them with the api requests for prices
     let trim_promises = [];
     vins.forEach((vin) => trim_promises.push(get_trim(vin)));
+    // Send the trim API requests, wait for response
     Promise.all(trim_promises).then((data) => {
       value_promises = [];
+      // Push the data into an array so we can send requests via Promise.all
       data.forEach((trim) => {
         if (trim.trimOptions) {
           value_promises.push(
             get_price({
               vin: trim.vin,
-              zip: (req.query.zip) ? req.query.zip : (vehicles[trim.vin].zip) ? vehicles[trim.vin].zip : "90017",
+              zip: req.query.zip
+                ? req.query.zip
+                : vehicles[trim.vin].zip
+                ? vehicles[trim.vin].zip
+                : "90017",
               condition: "GOOD",
-              odometer: (vehicles[trim.vin].mileage) ? vehicles[trim.vin].mileage : trim.mileage,
-              trimOptions: trim.trimOptions
+              odometer: vehicles[trim.vin].mileage
+                ? vehicles[trim.vin].mileage
+                : trim.mileage,
+              trimOptions: trim.trimOptions,
             })
           );
         } else {
           delete vehicles[trim.vin];
         }
       });
+      // Send the requests to get the market value prices, wait for response
       Promise.all(value_promises).then((data) => {
-        data.forEach(price => {
+        data.forEach((price) => {
           if (price.price) {
-            vehicles[price.vin].undervalue = ((vehicles[price.vin].sellerType === 'Dealership') ? price.price.consumerRetailPrice : price.price.fsboPrice) - vehicles[price.vin].price;
+            vehicles[price.vin].undervalue =
+              (vehicles[price.vin].sellerType === "Dealership"
+                ? price.price.consumerRetailPrice
+                : price.price.fsboPrice) - vehicles[price.vin].price;
           }
         });
         res.send(vehicles);
@@ -57,6 +70,10 @@ function get_vehicles(req, res, next) {
   });
 }
 
+/**
+ * Get the trim information for a specific vehicle
+ * @param {string} vin
+ */
 function get_trim(vin) {
   return new Promise((resolve, reject) => {
     var options = {
@@ -65,8 +82,8 @@ function get_trim(vin) {
       path: "/hbv/cow/trims/" + vin,
       headers: {
         "User-Agent": "PostmanRuntime/7.26.8",
-        "Accept": "application/json",
-      }
+        Accept: "application/json",
+      },
     };
 
     let req = https
@@ -85,19 +102,21 @@ function get_trim(vin) {
             let trim = JSON.parse(data);
             resolve({
               trimOptions: {
-                subtrim: trim.trimOptions[0].subtrim, 
-                trim: trim.trimOptions[0].trim, 
-                trimDisplay: trim.trimOptions[0].trimDisplay, 
+                subtrim: trim.trimOptions[0].subtrim,
+                trim: trim.trimOptions[0].trim,
+                trimDisplay: trim.trimOptions[0].trimDisplay,
                 trimDefault: false,
-                options: trim.trimOptions[0].options.filter(option => { return option.componentDefault === true })
+                options: trim.trimOptions[0].options.filter((option) => {
+                  return option.componentDefault === true;
+                }),
               },
               mileage: trim.odometer,
-              vin: vin
+              vin: vin,
             });
           } catch (e) {
             resolve({
               trimOtions: false,
-              vin: vin
+              vin: vin,
             });
           }
         });
@@ -109,6 +128,10 @@ function get_trim(vin) {
   });
 }
 
+/**
+ * Get the fair market value for a specific vehicle.
+ * @param {object} vehicle
+ */
 function get_price(vehicle) {
   return new Promise((resolve, reject) => {
     var options = {
@@ -117,8 +140,8 @@ function get_price(vehicle) {
       path: "/hbv/cow/prices",
       headers: {
         "User-Agent": "PostmanRuntime/7.26.8",
-        "Accept": "*/*",
-        "Content-Type": "application/json"
+        Accept: "*/*",
+        "Content-Type": "application/json",
       },
       maxRedirects: 20,
     };
@@ -136,16 +159,16 @@ function get_price(vehicle) {
         resp.on("end", () => {
           // Resolve the promise with the final retail price
           try {
-            resolve({price: JSON.parse(data).vehiclePrice, vin: vehicle.vin });
+            resolve({ price: JSON.parse(data).vehiclePrice, vin: vehicle.vin });
           } catch {
-            resolve({price:false, vin:vehicle.vin});
+            resolve({ price: false, vin: vehicle.vin });
           }
         });
       })
       .on("error", (err) => {
         reject(err.message);
       });
-      req.write(JSON.stringify(vehicle));
+    req.write(JSON.stringify(vehicle));
     req.end();
   });
 }

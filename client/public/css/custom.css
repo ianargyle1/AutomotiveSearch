@@ -28,3 +28,8 @@
     padding-right: .5em;
     padding-left: .5em;
 }
+
+.center-head {
+    width: 100%;
+    text-align: center;
+}

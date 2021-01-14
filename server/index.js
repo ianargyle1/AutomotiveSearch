@@ -48,7 +48,6 @@ app.use(express.static(client_path));
 app.get(/^(?!\/api\/).+$/, (req, res) => {
     res.sendFile(path.join(client_path, 'index.html'));
 });
-
 app.get('/api/vehicles', vehicle_api.get_vehicles);
 
 const port = 3000;

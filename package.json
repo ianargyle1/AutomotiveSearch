@@ -1,0 +1,40 @@
+{
+  "name": "automotivesearch",
+  "version": "1.0.0",
+  "description": "Search for cars and compare with estimated fair value.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ianargyle1/AutomotiveSearch.git"
+  },
+  "author": "Ian Argyle",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ianargyle1/AutomotiveSearch/issues"
+  },
+  "homepage": "https://github.com/ianargyle1/AutomotiveSearch#readme",
+  "dependencies": {
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "follow-redirects": "^1.13.1",
+    "mongodb": "^3.6.3",
+    "request": "^2.88.2",
+    "@testing-library/jest-dom": "^5.11.8",
+    "@testing-library/react": "^11.2.2",
+    "@testing-library/user-event": "^12.6.0",
+    "js-cookie": "^2.2.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.1",
+    "web-vitals": "^0.2.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}

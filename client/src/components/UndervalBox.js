@@ -17,9 +17,7 @@ export default class UndervalBox extends React.Component {
         : this.props.undervalue / this.props.price < -0.15
         ? 0
         : this.props.undervalue / this.props.price;
-    console.log(underPercent);
     let norm = 120 * ((underPercent + 0.15) / 0.3);
-    console.log(norm);
     return { backgroundColor: "hsl(" + norm + ", 54%, 43%)" };
   };
   /**

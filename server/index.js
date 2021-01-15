@@ -8,11 +8,13 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const http = require("http");
+const compression = require('compression');
 require("dotenv").config();
 
 const app = express();
 
 app.use(cookieParser());
+app.use(compression()); //Compress all routes
 
 // Attempt to get the users zip, set a cookie to save the zip.
 app.use(function (req, res, next) {

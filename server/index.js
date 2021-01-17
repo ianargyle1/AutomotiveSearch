@@ -3,7 +3,7 @@
  * @author Ian Argyle
  */
 
-const vehicle_api = require(__dirname + "/controllers/Vehicle_API_Controller");
+const vehicle_api = require("./controllers/vehicle_api_controller");
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");

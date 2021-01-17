@@ -62,5 +62,5 @@ app.get(/^(?!\/api\/).+$/, (req, res) => {
 // Vehicle API path
 app.get("/api/vehicles", vehicle_api.get_vehicles);
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on ${port}`));

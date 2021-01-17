@@ -10,7 +10,7 @@ export const getVehicles = (data) => {
     .filter(Boolean)
     .join("&");
   return new Promise((resolve, reject) => {
-    fetch("http://localhost:3000/api/vehicles?" + params)
+    fetch("/api/vehicles?" + params)
       .then((response) => response.json())
       .then((data) => resolve(data));
   });

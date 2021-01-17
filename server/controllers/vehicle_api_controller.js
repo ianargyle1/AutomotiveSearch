@@ -18,7 +18,7 @@ function get_vehicles(req, res, next) {
   let vehicles = {};
   // Send the requests
   Promise.all([
-    autotrader.get_vehicles(req.query),
+    //autotrader.get_vehicles(req.query),
     ksl.get_vehicles(req.query),
   ]).then((data) => {
     // Combine the data into vehicles

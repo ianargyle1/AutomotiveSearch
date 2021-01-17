@@ -60,7 +60,8 @@ const get_vehicles = (search_params) => {
       path: "/rest/searchresults/base?" + querystring.stringify(params),
       headers: {
         "User-Agent": "PostmanRuntime/7.26.8",
-        Accept: "application/json",
+        "Accept": "application/json",
+        "Content-Type": "application/json",
       },
       maxRedirects: 20,
     };

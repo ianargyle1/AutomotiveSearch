@@ -17,7 +17,7 @@ const get_vehicles = (search_params) => {
   return new Promise((resolve, reject) => {
     // Load the autotrader filters json file to lookup make and model codes in  the future
     var lookup = JSON.parse(
-      fs.readFileSync("./services/autotrader_lookup.json", "utf8")
+      fs.readFileSync("./autotrader_lookup.json", "utf8")
     );
 
     let params = {

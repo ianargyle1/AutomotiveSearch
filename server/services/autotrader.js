@@ -78,6 +78,7 @@ const get_vehicles = (search_params) => {
         // The whole response has been received. Parse and return the result.
         resp.on("end", () => {
           let vehicles = {};
+          console.log(data);
           let jsData = JSON.parse(data);
           if (jsData.listings) {
             jsData.listings.map(function (val) {

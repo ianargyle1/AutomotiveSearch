@@ -10,3 +10,6 @@ I have every intention of fixing all the issues listed below. However, I am a co
 * If no search results are found, "Loading..." will show forever.
 * The live demo version (on Heroku) only searches KSL Cars as Autotrader blocks API requests from Heroku's servers.
 * There is no validity check for the year, mileage, and price textboxes.
+
+## Implementation Details
+There are two main sections, client and server. Server runs on the server via node.js and express. It handles API requests from the client and is responsible for serving the React app from the client folder. Client is a React app that relies on the server side API for correctly formatted data.
